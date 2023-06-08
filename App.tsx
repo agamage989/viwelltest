@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Stack, Scene } from 'react-native-router-flux';
-import { StatusBar, Text } from 'react-native';
+import { StatusBar } from 'react-native';
 
 import { SCREENS } from './app/utilities/constants';
 import HomePage from './app/screens/Home';
@@ -10,14 +10,6 @@ import TrendPage from './app/screens/Trend';
 import RewardsPage from './app/screens/Rewards';
 import CheckInPage from './app/screens/Check-In';
 import MenuPage from './app/screens/Menu';
-
-// const App = (props: any) => {
-//   return (
-//     <>
-//       <Text style={{marginTop: 50, color: 'red'}}>Test</Text>
-//     </>
-//   );
-// }
 
 const App = (props: any) => (
   <Router {...props} >
@@ -44,12 +36,12 @@ const App = (props: any) => (
       >
         <Scene key={SCREENS.HOME} component={HomePage} />
         <Scene key={SCREENS.TREND} component={TrendPage} />
+        <Scene key={SCREENS.CHECK_IN} component={CheckInPage} />
         <Scene
           initial
           key={SCREENS.REWARDS}
           component={RewardsPage}
           navBar={() => <HeaderBar {...props} title="Rewards" backButtonEnabled />} />
-        <Scene key={SCREENS.CHECK_IN} component={CheckInPage} />
         <Scene key={SCREENS.MENU} component={MenuPage} />
 
       </Scene>

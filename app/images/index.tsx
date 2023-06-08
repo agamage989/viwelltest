@@ -7,8 +7,10 @@ import Back from "./back-svgrepo-com.svg";
 import Bell from "./bell-svgrepo-com.svg";
 import Calendar from "./calendar-1322-svgrepo-com.svg";
 import Diamond from "./diamond-svgrepo-com.svg";
+import Next from "./arrow-right-lg-svgrepo-com.svg";
 
 import Logo from "./VIWELL-Logo.png";
+import GiftBox from "./giftbox.jpg";
 
 export default {
     Menu,
@@ -21,4 +23,6 @@ export default {
     Bell,
     Calendar,
     Diamond,
+    GiftBox,
+    Next,
 };

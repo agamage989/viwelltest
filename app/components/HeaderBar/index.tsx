@@ -22,7 +22,7 @@ export const HeaderBar = (props: any) => {
                             Actions.pop();
                         }}
                     >
-                        <Text style={{ color: "#fff", marginRight: 10 }}>2381</Text>
+                        <Text style={{ color: "#fff", marginRight: 10, fontSize: 16, }}>2810</Text>
                         <Diamond fill="#fff" width={30} height={30} />
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -43,33 +43,6 @@ export const HeaderBar = (props: any) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {/* <View
-                style={styles.backColumn}>
-                {props.backButtonEnabled && (
-                    <TouchableOpacity
-                        style={{ paddingVertical: 13 }}
-                        onPress={() => {
-                            Actions.pop();
-                        }}
-                    >
-                        <BackButton />
-                    </TouchableOpacity>
-                )}
-            </View>
-            <View
-                style={styles.logoColumn}>
-                <Logo overrideBase={{ width: 150, height: 55 }} />
-            </View>
-            <View
-                style={styles.actionColumn}>
-                {props.actionButtonEnabled && (
-                    <TouchableOpacity
-                        onPress={props.actionButtonFunc}
-                    >
-                        <ActionButton />
-                    </TouchableOpacity>
-                )}
-            </View> */}
         </View>
     );
 };

@@ -4,14 +4,16 @@ import { hasNotch } from "react-native-device-info";
 export default StyleSheet.create({
     base: {
         flex: 1,
-        maxHeight: hasNotch() ? 100 : 85,
+        position: 'absolute',
+        bottom: 0,
+        minHeight: hasNotch() ? 120 : 100,
         paddingBottom: hasNotch() ? 5 : 0,
         flexDirection: 'row',
         backgroundColor: '#4c4c4c',
-        borderWidth: 1,
-        borderColor: '#176389',
         borderTopStartRadius: 15,
         borderTopEndRadius: 15,
+        zIndex: 99999,
+        elevation: 1,
     },
     actionBtn: {
         flex: 1,

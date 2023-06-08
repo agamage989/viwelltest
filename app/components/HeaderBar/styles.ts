@@ -9,8 +9,6 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignContent: 'space-between',
         backgroundColor: '#1b1b1b',
-        borderBottomWidth: 1,
-        borderBottomColor: '#eee',
     },
     logoIcon: {
         width: 100,
