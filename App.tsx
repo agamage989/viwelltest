@@ -1,118 +1,60 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { Router, Stack, Scene } from 'react-native-router-flux';
+import { StatusBar, Text } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { SCREENS } from './app/utilities/constants';
+import HomePage from './app/screens/Home';
+import BottomNavBar from './app/components/BottomNavBar';
+import { HeaderBar } from './app/components/HeaderBar';
+import TrendPage from './app/screens/Trend';
+import RewardsPage from './app/screens/Rewards';
+import CheckInPage from './app/screens/Check-In';
+import MenuPage from './app/screens/Menu';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+// const App = (props: any) => {
+//   return (
+//     <>
+//       <Text style={{marginTop: 50, color: 'red'}}>Test</Text>
+//     </>
+//   );
+// }
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const App = (props: any) => (
+  <Router {...props} >
+    <Stack
+      {...props}
+      key="root"
+      navTransparent
+      navigationBarStyle={{
+        backgroundColor: '#fff',
+        margin: 0,
+        marginBottom: StatusBar.currentHeight,
+      }}>
+      <Scene
+        key={SCREENS.MAIN}
+        tabs
+        tabBarPosition='bottom'
+        tabBarStyle={{
+          backgroundColor: '#176389',
+        }}
+        tabBarComponent={(props) => <>
+          <BottomNavBar {...props} />
+        </>}
+        hideNavBar
+      >
+        <Scene key={SCREENS.HOME} component={HomePage} />
+        <Scene key={SCREENS.TREND} component={TrendPage} />
+        <Scene
+          initial
+          key={SCREENS.REWARDS}
+          component={RewardsPage}
+          navBar={() => <HeaderBar {...props} title="Rewards" backButtonEnabled />} />
+        <Scene key={SCREENS.CHECK_IN} component={CheckInPage} />
+        <Scene key={SCREENS.MENU} component={MenuPage} />
 
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+      </Scene>
+    </Stack>
+  </Router>
+);
 
 export default App;
