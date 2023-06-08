@@ -4,7 +4,6 @@ import { DateTime, DurationObjectUnits } from "luxon";
 
 import Images from "../images";
 
-
 const { GiftBox, Diamond, Chat } = Images;
 
 const ItemDetailPage = (props: any) => {

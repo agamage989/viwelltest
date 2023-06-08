@@ -1,47 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, ScrollView, View, TouchableOpacity, StyleSheet } from "react-native";
 import { ChipName } from "../components/Chips";
 import { RewardListItem } from "../components/RewardListItem";
 import { DateTime } from "luxon";
 
 import Images from "../images";
+import { useLazyGetAllRewardsQuery } from "../redux/api";
+import { EmptyTagsLoader } from "../components/EmptyTagsLoader";
+import { EmptyCardsLoader } from "../components/EmptyCardsLoader";
 
 const { Next } = Images;
 
 const RewardsPage = () => {
-    const [tags, setTags] = useState([{
-        name: "All",
-        selected: true,
-    }, {
-        name: "Electronics & Communication",
-        selected: false,
-    }, {
-        name: "Fashion & Accessories",
-        selected: false,
-    }, {
-        name: "Games",
-        selected: false,
-    }]);
-
-    const [rewards, setRewards] = useState([{
-        title: "GET 5% OFF Dropkicks AED",
-        brand: "Dropkicks",
-        price: 500,
-        tag: "Electronics & Communication",
-        date: DateTime.now().plus({ days: Math.random() * 365 }).toISO(),
-    }, {
-        title: "Get upto 35% OFF Namshi AED",
-        brand: "Namshi",
-        price: 800,
-        tag: "Fashion & Accessories",
-        date: DateTime.now().plus({ days: Math.random() * 365 }).toISO(),
-    }, {
-        title: "Get upto 35% OFF Games AED",
-        brand: "Namshi",
-        price: 340,
-        tag: "Games",
-        date: DateTime.now().plus({ days: Math.random() * 365 }).toISO(),
-    }]);
+    const [getAllRewards, result] = useLazyGetAllRewardsQuery();
+    const [tags, setTags] = useState([]);
+    const [rewards, setRewards] = useState([]);
 
     const setFilter = (tagName: string) => {
         const updatedTags = tags.map((tag) => {
@@ -59,7 +32,23 @@ const RewardsPage = () => {
         setTags(updatedTags);
     }
 
-    const selectedTag = tags.filter(tag => tag.selected).pop()?.name || "All";
+    useEffect(() => {
+        getAllRewards({}).then(response => {
+            const { data } = response || {};
+            if (data?.rewards) {
+                setRewards(data?.rewards || []);
+            }
+
+            if (data.tags) {
+                setTags(data.tags || []);
+            }
+        }).catch((ex: Error) => {
+            console.log(ex);
+        })
+    }, []);
+    console.log("rewards", rewards);
+
+    const selectedTag = (tags || []).filter(tag => tag.selected).pop()?.name || "All";
 
     return (
         <ScrollView
@@ -87,12 +76,18 @@ const RewardsPage = () => {
             <View style={style.divider} />
             <ScrollView horizontal style={{ marginVertical: 20 }}>
                 {
-                    tags.map((chip: { name: string, selected: boolean }, index: number) => (<TouchableOpacity disabled={chip.selected} onPress={() => setFilter(chip.name)}><ChipName {...chip} index={index} /></TouchableOpacity>))
+                    !result.isLoading && (tags || []).map((chip: { name: string, selected: boolean }, index: number) => (<TouchableOpacity disabled={chip.selected} onPress={() => setFilter(chip.name)}><ChipName {...chip} index={index} /></TouchableOpacity>))
+                }
+                {
+                    result.isLoading && ([{}, {}, {}, {}].map(() => <EmptyTagsLoader />))
                 }
             </ScrollView>
             {
-                rewards.filter((reward) => selectedTag === "All" ? true : reward.tag == selectedTag
+                !result.isLoading &&  (rewards || []).filter((reward) => selectedTag === "All" ? true : reward.tag == selectedTag
                 ).map((reward: any) => (<RewardListItem {...reward} />))
+            }
+            {
+                result.isLoading && ([{}, {}, {}, {}].map(() => <EmptyCardsLoader />))
             }
         </ScrollView>)
 };
