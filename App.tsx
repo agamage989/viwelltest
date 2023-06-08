@@ -10,6 +10,8 @@ import TrendPage from './app/screens/Trend';
 import RewardsPage from './app/screens/Rewards';
 import CheckInPage from './app/screens/Check-In';
 import MenuPage from './app/screens/Menu';
+import ItemDetailPage from './app/screens/ItemDetail';
+import { HeaderTextBar } from './app/components/HeaderTextBar';
 
 const App = (props: any) => (
   <Router {...props} >
@@ -23,6 +25,7 @@ const App = (props: any) => (
         marginBottom: StatusBar.currentHeight,
       }}>
       <Scene
+        initial
         key={SCREENS.MAIN}
         tabs
         tabBarPosition='bottom'
@@ -43,8 +46,8 @@ const App = (props: any) => (
           component={RewardsPage}
           navBar={() => <HeaderBar {...props} title="Rewards" backButtonEnabled />} />
         <Scene key={SCREENS.MENU} component={MenuPage} />
-
       </Scene>
+      <Scene key={SCREENS.REWARD_DETAIL} component={ItemDetailPage} navBar={() => <HeaderTextBar {...props} />} />
     </Stack>
   </Router>
 );

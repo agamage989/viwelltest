@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Text, ScrollView, View, TouchableOpacity, StyleSheet } from "react-native";
 import { ChipName } from "../components/Chips";
 import { RewardListItem } from "../components/RewardListItem";
+import { DateTime } from "luxon";
 
 import Images from "../images";
 
@@ -26,15 +27,39 @@ const RewardsPage = () => {
         title: "GET 5% OFF Dropkicks AED",
         brand: "Dropkicks",
         price: 500,
+        tag: "Electronics & Communication",
+        date: DateTime.now().plus({ days: Math.random() * 365 }).toISO(),
     }, {
         title: "Get upto 35% OFF Namshi AED",
         brand: "Namshi",
         price: 800,
+        tag: "Fashion & Accessories",
+        date: DateTime.now().plus({ days: Math.random() * 365 }).toISO(),
     }, {
-        title: "Get upto 35% OFF Namshi AED",
+        title: "Get upto 35% OFF Games AED",
         brand: "Namshi",
-        price: 800,
+        price: 340,
+        tag: "Games",
+        date: DateTime.now().plus({ days: Math.random() * 365 }).toISO(),
     }]);
+
+    const setFilter = (tagName: string) => {
+        const updatedTags = tags.map((tag) => {
+            if (tag.selected && tag.name !== tagName) {
+                tag.selected = false;
+            }
+
+            if (tag.name == tagName) {
+                tag.selected = true;
+            }
+
+            return tag;
+        });
+
+        setTags(updatedTags);
+    }
+
+    const selectedTag = tags.filter(tag => tag.selected).pop()?.name || "All";
 
     return (
         <ScrollView
@@ -56,17 +81,18 @@ const RewardsPage = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={{ flex: 1, flexDirection: 'row', marginVertical: 20 }}>
-                <Text style={{ color: "#fff", fontSize: 14, lineHeight: 18, }}>Treat yourself by checking out the variety of rewards you can swap your points for Keep on progressing to gain more points and rewards</Text>
+            <View style={style.rewardDescription}>
+                <Text style={style.rewardDescText}>Treat yourself by checking out the variety of rewards you can swap your points for Keep on progressing to gain more points and rewards</Text>
             </View>
-            <View style={{ flex: 1, flexDirection: 'row', marginVertical: 10, borderColor: "#303030", borderWidth: 1, }} />
+            <View style={style.divider} />
             <ScrollView horizontal style={{ marginVertical: 20 }}>
                 {
-                    tags.map((chip: any, index: number) => (<TouchableOpacity disabled={chip.selected} onPress={() => { }}><ChipName {...chip} index={index} /></TouchableOpacity>))
+                    tags.map((chip: { name: string, selected: boolean }, index: number) => (<TouchableOpacity disabled={chip.selected} onPress={() => setFilter(chip.name)}><ChipName {...chip} index={index} /></TouchableOpacity>))
                 }
             </ScrollView>
             {
-                rewards.map((reward: any) => (<RewardListItem {...reward} />))
+                rewards.filter((reward) => selectedTag === "All" ? true : reward.tag == selectedTag
+                ).map((reward: any) => (<RewardListItem {...reward} />))
             }
         </ScrollView>)
 };
@@ -95,8 +121,9 @@ const style = StyleSheet.create({
         justifyContent: 'center'
     },
     myRewardsBtnText: { color: "#ffd119", fontWeight: "bold", fontSize: 16, marginRight: 10 },
-
-
+    rewardDescription: { flex: 1, flexDirection: 'row', marginVertical: 20 },
+    rewardDescText: { color: "#fff", fontSize: 14, lineHeight: 18, },
+    divider: { flex: 1, flexDirection: 'row', marginVertical: 10, borderColor: "#303030", borderWidth: 1, },
 });
 
 export default RewardsPage;
