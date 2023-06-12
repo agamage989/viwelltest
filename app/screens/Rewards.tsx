@@ -18,15 +18,16 @@ const RewardsPage = () => {
 
     const setFilter = (tagName: string) => {
         const updatedTags = tags.map((tag) => {
-            if (tag.selected && tag.name !== tagName) {
-                tag.selected = false;
+            let updateTag = Object.assign({}, tag);
+            if (updateTag.selected && updateTag.name !== tagName) {
+                updateTag.selected = false;
             }
 
-            if (tag.name == tagName) {
-                tag.selected = true;
+            if (`${updateTag.name}` === tagName) {
+                updateTag.selected = true;
             }
 
-            return tag;
+            return updateTag;
         });
 
         setTags(updatedTags);
@@ -46,9 +47,8 @@ const RewardsPage = () => {
             console.log(ex);
         })
     }, []);
-    console.log("rewards", rewards);
 
-    const selectedTag = (tags || []).filter(tag => tag.selected).pop()?.name || "All";
+    const selectedTag = (tags || []).filter(tag => tag.selected)[0].name || "All";
 
     return (
         <ScrollView
