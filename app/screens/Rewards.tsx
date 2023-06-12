@@ -48,7 +48,8 @@ const RewardsPage = () => {
         })
     }, []);
 
-    const selectedTag = (tags || []).filter(tag => tag.selected)[0].name || "All";
+    const filteredSelectedTag = (tags || []).filter(tag => tag.selected);
+    const selectedTag = filteredSelectedTag.length > 0 ? filteredSelectedTag[0].name : "All";
 
     return (
         <ScrollView
@@ -83,7 +84,7 @@ const RewardsPage = () => {
                 }
             </ScrollView>
             {
-                !result.isLoading &&  (rewards || []).filter((reward) => selectedTag === "All" ? true : reward.tag == selectedTag
+                !result.isLoading && (rewards || []).filter((reward) => selectedTag === "All" ? true : reward.tag == selectedTag
                 ).map((reward: any) => (<RewardListItem {...reward} />))
             }
             {
