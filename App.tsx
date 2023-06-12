@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Stack, Scene } from 'react-native-router-flux';
-import { StatusBar } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { store } from './app/redux/store';
 
@@ -55,5 +55,6 @@ const App = (props: any) => (
     </Router>
   </Provider>
 );
+
 
 export default App;
